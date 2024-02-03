@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  php:
+    build: ./
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8080:80"
+
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hillel
