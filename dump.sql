@@ -114,3 +114,5 @@ WHERE price > 50000;
 UPDATE realestates SET updated_at=CURRENT_TIMESTAMP, deleted_at = CURRENT_TIMESTAMP WHERE id = 1;
 
 DELETE FROM floors WHERE id = 7;
+
+SELECT * FROM realestates WHERE deleted_at IS NULL ;
