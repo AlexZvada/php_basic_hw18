@@ -1,5 +1,6 @@
 <?php
 
+
 use interfaces\SqlQueryBuilder;
 
 class SqlBuilder implements SqlQueryBuilder
@@ -59,7 +60,7 @@ class SqlBuilder implements SqlQueryBuilder
         }
         if ($withoutPrepearing) {
             if ($operator) {
-                $this->query->where[] = "$field $operator " . "'" .  "$value"  . "'";
+                $this->query->where[] = "$field $operator " . "'" . "$value" . "'";
             } else  $this->query->where[] = "$field $value";
 
             return $this;
@@ -76,7 +77,7 @@ class SqlBuilder implements SqlQueryBuilder
     public function update(string $table, array $keys): SqlQueryBuilder
     {
         $this->reset();
-        $values = $this->setHelper($keys);
+        $values = $this->updateHelper($keys);
         $this->query->base = "UPDATE " . $table . " SET " . "updated_at=CURRENT_TIMESTAMP, " . $values;
         $this->query->type = 'update';
         return $this;
@@ -139,46 +140,29 @@ class SqlBuilder implements SqlQueryBuilder
      */
     private function valuesHelper(array|string $values): string
     {
+        $result = '';
+        $symbol = "?";
         if (is_array($values)) {
             $count = count($values);
         } else $count = 1;
-
-        return match ($count) {
-            2 => "?, ?",
-            3 => "?, ?, ?",
-            4 => "?, ?, ?, ?",
-            5 => "?, ?, ?, ?, ?",
-            6 => "?, ?, ?, ?, ?, ?",
-            7 => "?, ?, ?, ?, ?, ?, ?",
-            8 => "?, ?, ?, ?, ?, ?, ?, ?",
-            9 => "?, ?, ?, ?, ?, ?, ?, ?, ?",
-            10 => "?, ?, ?, ?, ?, ?, ?, ?, ?, ?",
-            11 => "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?",
-            12 => "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?",
-            13 => "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?",
-            14 => "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?",
-            default => "?"
-        };
+        for ($i = 0; $i < $count; $i++) {
+            if ($i === $count -1) {
+                $result .= $symbol;
+            } else $result .= $symbol . ",";
+        }
+        return $result;
     }
 
     /**
      * @param array $keys
      * @return string
      */
-    private function setHelper(array $keys): string
+    private function updateHelper(array $keys): string
     {
-        $count = count($keys);
-        return match ($count) {
-            2 => "$keys[0] = ?, $keys[1] = ?",
-            3 => "$keys[0] = ?, $keys[1] = ?, $keys[2] = ?",
-            4 => "$keys[0] = ?, $keys[1] = ?, $keys[2] = ?, $keys[3]=?",
-            5 => "$keys[0] = ?,  $keys[1] = ?,  $keys[2] = ?, $keys[3] = ?, $keys[4] = ?",
-            6 => "$keys[0] = ?,  $keys[1] = ?,  $keys[2] = ?, $keys[3] = ?, $keys[4] = ?, $keys[5] = ?",
-            7 => "$keys[0] = ?,  $keys[1] = ?,  $keys[2] = ?, $keys[3] = ?, $keys[4] = ?, $keys[5] = ?, $keys[6] = ?",
-            8 => "$keys[0] = ?,  $keys[1] = ?,  $keys[2] = ?, $keys[3] = ?, $keys[4] = ?, $keys[5] = ?, $keys[6] = ?, $keys[7] = ?",
-            9 => "$keys[0] = ?, $keys[1] = ?,  $keys[2] = ?,  $keys[3] = ?, $keys[4] = ?, $keys[5] = ?, $keys[6] = ?, $keys[7] = ?, $keys[8] = ?",
-            10 => "$keys[0] = ?, $keys[1] = ?,  $keys[2] = ?,  $keys[3] = ?, $keys[4] = ?, $keys[5] = ?, $keys[6] = ?, $keys[7] = ?, $keys[8] = ?, $keys[9] = ?",
-            default => "$keys[0] = ?"
-        };
+        $result = [];
+        foreach ($keys as $value) {
+            $result[] = $value . " = ?";
+        }
+        return implode(',', $result);
     }
 }

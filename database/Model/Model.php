@@ -56,10 +56,11 @@ class Model
     /**
      * @param string $column
      * @param string $value
+     * @param array $fields
      * @param string $operator
      * @return mixed
      */
-    public static function where(string $column, string $value, array $fields =['*'] , string $operator = '='): mixed
+    public static function where(string $column, string $value, array $fields =['*'] , string $operator = '='): Generator
     {
         $db = Connector::getInstance();
         $table = self::getTable();

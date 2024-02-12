@@ -13,45 +13,45 @@ require_once APP_DIR . 'database/Model/Type.php';
 require_once APP_DIR . 'database/Model/Realestate.php';
 
 try {
-    //create tables
-    Bed::up();
-    Bath::up();
-    Floor::up();
-    Appointment::up();
-    Type::up();
-    Realestate::up();
-
-    //delete tables
-    Realestate::down();
-    Bed::down();
-    Bath::down();
-    Floor::down();
-    Appointment::down();
-    Type::down();
-
-    //insert data in to tables, create method accept array of params
-    for ($i = 1; $i <=8; $i++){
-        Bed::create(["value"=>$i]);
-    }
-    Bed::create(["value"=>0]);
-
-    for ($i = 1; $i <=18; $i++){
-       Floor::create(["value"=>$i]);
-    }
-    Floor::create(["value"=>0]);
-
-    for ($i = 1; $i <=6; $i++){
-        Bath::create(["value"=>$i]);
-    }
-    Bath::create(["value"=>0]);
-    $appointments = ['for rent', 'for sale', 'commercial'];
-    foreach ($appointments as $appointment) {
-        Appointment::create(['value' => $appointment]);
-    }
-    $types = ['flat', 'house', 'room', 'villa', 'townhouse'];
-    foreach ($types as $type) {
-        Type::create(['value' => $type]);
-    }
+//    //create tables
+//    Bed::up();
+//    Bath::up();
+//    Floor::up();
+//    Appointment::up();
+//    Type::up();
+//    Realestate::up();
+//
+//    //delete tables
+//    Realestate::down();
+//    Bed::down();
+//    Bath::down();
+//    Floor::down();
+//    Appointment::down();
+//    Type::down();
+//
+//    //insert data in to tables, create method accept array of params
+//    for ($i = 1; $i <=8; $i++){
+//        Bed::create(["value"=>$i]);
+//    }
+//    Bed::create(["value"=>0]);
+//
+//    for ($i = 1; $i <=18; $i++){
+//       Floor::create(["value"=>$i]);
+//    }
+//    Floor::create(["value"=>0]);
+//
+//    for ($i = 1; $i <=6; $i++){
+//        Bath::create(["value"=>$i]);
+//    }
+//    Bath::create(["value"=>0]);
+//    $appointments = ['for rent', 'for sale', 'commercial'];
+//    foreach ($appointments as $appointment) {
+//        Appointment::create(['value' => $appointment]);
+//    }
+//    $types = ['flat', 'house', 'room', 'villa', 'townhouse'];
+//    foreach ($types as $type) {
+//        Type::create(['value' => $type]);
+//    }
 
     Realestate::create(
         [
