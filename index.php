@@ -2,6 +2,8 @@
 const APP_DIR = __DIR__ . '/';
 require_once APP_DIR . 'database/config.php';
 require_once APP_DIR . 'database/Connector.php';
+require_once APP_DIR . 'interfaces/SqlQueryBuilder.php';
+require_once APP_DIR . 'database/SqlBuilder.php';
 require_once APP_DIR . 'database/Model/Model.php';
 require_once APP_DIR . 'database/Model/Appointment.php';
 require_once APP_DIR . 'database/Model/Bed.php';
@@ -20,12 +22,12 @@ try {
     Realestate::up();
 
     //delete tables
-//    Realestate::down();
-//    Bed::down();
-//    Bath::down();
-//    Floor::down();
-//    Appointment::down();
-//    Type::down();
+    Realestate::down();
+    Bed::down();
+    Bath::down();
+    Floor::down();
+    Appointment::down();
+    Type::down();
 
     //insert data in to tables, create method accept array of params
     for ($i = 1; $i <=8; $i++){
@@ -67,12 +69,14 @@ try {
     );
 
     //get data from tables
-    $property = Realestate::where('id', 5);
+    $property = Realestate::where('id', 10, ['price', 'address', "id"], ">");
+    foreach ($property as $realty){
         echo "<pre>";
-        print_r($property);
+        print_r($realty);
         echo "<pre>";
+    }
 
-    $all = Realestate::all();
+    $all = Realestate::all(['price, address, id']);
     foreach ($all as $realty){
         echo "<pre>";
         print_r($realty);
@@ -83,12 +87,12 @@ try {
     Realestate::update([
         'price'=>3200,
         'address'=>'some new address',
-        'id'=>2,
+        'id'=>7,
     ]);
 
 
     //delete data
-    Realestate::delete(1);
+    Realestate::delete(6);
 } catch (PDOException|Exception $exception) {
     echo $exception->getMessage();
 }

@@ -6,7 +6,7 @@ class Realestate extends Model
      * @var string
      */
     protected static string $table = 'realestates';
-//    protected static bool|null $softDelete = true;
+    protected static bool|null $softDelete = true;
     /**
      * @return void
      */
